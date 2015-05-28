@@ -270,15 +270,37 @@ void VolumeManager::handleHdmiEvent(NetlinkEvent *evt)
     int action;
     action = evt->getAction();
     if (action == NetlinkEvent::NlActionChange ) {
-        const char *state = evt->findParam("HDMI_STATE");
-        // Send the HDMI cable status to libhdmistatus(to SurfaceFlinger)
-        if (!strcmp(state, "online")) {
-            ALOGI("HDMI: online\n");
-            mHdmiClient->setHdmiCableStatus(1);
-        } else {
-            ALOGI("HDMI: offline\n");
-            mHdmiClient->setHdmiCableStatus(0);
-        }
+    	const char *state = evt->findParam("HDMI_STATE");
+		// Send the HDMI cable status to libhdmiclient(to SurfaceFlinger)
+		if (!strcmp(state, "online")) {
+			ALOGI("HDMI: online\n");
+			mHdmiClient->setHdmiCableStatus(1);
+		} else {
+			ALOGI("HDMI: offline\n");
+			mHdmiClient->setHdmiCableStatus(0);
+		}
+    } else {
+        SLOGW("No handler implemented for action %d", action);
+    }
+}
+
+void VolumeManager::handleHdmiSwitchEvent(NetlinkEvent *evt)
+{
+    int action;
+    action = evt->getAction();
+    if (action == NetlinkEvent::NlActionChange ) {
+    	const char *name = evt->findParam("SWITCH_NAME");
+    	if (!strcmp(name, "hdmi")) {
+    		const char *state = evt->findParam("SWITCH_STATE");
+    		// Send the HDMI cable status to libhdmiclient(to SurfaceFlinger)
+    		if (!strcmp(state, "1")) {
+    			ALOGI("HDMI: online\n");
+    			mHdmiClient->setHdmiCableStatus(1);
+    		} else {
+            	ALOGI("HDMI: offline\n");
+            	mHdmiClient->setHdmiCableStatus(0);
+        	}
+    	}
     } else {
         SLOGW("No handler implemented for action %d", action);
     }

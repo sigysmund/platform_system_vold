@@ -86,6 +86,7 @@ public:
     void handleBlockEvent(NetlinkEvent *evt);
 #if defined(BOARD_USES_HDMI)
     void handleHdmiEvent(NetlinkEvent *evt);
+    void handleHdmiSwitchEvent(NetlinkEvent *evt);
 #endif
 
     int addVolume(Volume *v);

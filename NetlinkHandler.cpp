@@ -64,6 +64,9 @@ void NetlinkHandler::onEvent(NetlinkEvent *evt) {
     else if (!strcmp(subsys, "misc")) {
         vm->handleHdmiEvent(evt);
     }
+    else if (!strcmp(subsys, "switch")) {
+        vm->handleHdmiSwitchEvent(evt);
+    }
 #endif
 #endif
 
